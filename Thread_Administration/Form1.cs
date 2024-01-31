@@ -1,5 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using Thread_Administration.Base;
 
@@ -9,23 +12,25 @@ namespace Thread_Administration
     {
         public Form1()
         {
-            //Thread_Auto_Base.NewClass();
             InitializeComponent();
-            //MyClass myClass = new MyClass();
             Thread_Auto_Base.NewClass();
         }
-    }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Thread_Auto_Base.Thraead_Dispose();
+        }
+    }
 
     public class MyClass : Thread_Auto_Base
     {
-        public override event Action<DateTime, string> Run_Log;
-
-
+        public static MyClass myClass;
         public MyClass() : base()
         {
-
+            myClass = this;
         }
+
+        public override event Action<DateTime, string> Run_LogEvent;
 
         public override void Error(object thread)
         {
@@ -37,55 +42,31 @@ namespace Thread_Administration
 
         }
 
-        
+        [Description("diyds")]
         public override void Main(object thread)
+        {
+
+        }
+
+        public override void ThreadRestartEvent(ThreadAbortException ex, string class_na)
         {
 
         }
     }
 
-    class MyClass1 : Thread_Auto_Base
+    public class MyClass1 : Thread_Auto_Base
     {
+        public static MyClass1 myClass;
+        public MyClass1() : base()
+        {
+            myClass = this;
+        }
 
-        public override event Action<DateTime, string> Run_Log;
+        public override event Action<DateTime, string> Run_LogEvent;
 
         public override void Error(object thread)
         {
-        }
 
-        public override void Initialize(object thread)
-        {
-        }
-
-        public override void Main(object thread)
-        {
-        }
-    }
-
-    class MyClass2 : Thread_Auto_Base
-    {
-
-        public override event Action<DateTime, string> Run_Log;
-
-        public override void Error(object thread)
-        {
-        }
-
-        public override void Initialize(object thread)
-        {
-        }
-
-        public override void Main(object thread)
-        {
-        }
-    }
-
-    class MyClass3 : Thread_Auto_Base
-    {
-        public override event Action<DateTime, string> Run_Log;
-
-        public override void Error(object thread)
-        {
         }
 
         public override void Initialize(object thread)
@@ -97,189 +78,8 @@ namespace Thread_Administration
         {
 
         }
-    }
 
-    class MyClass4 : Thread_Auto_Base
-    {
-        public override event Action<DateTime, string> Run_Log;
-
-        public override void Error(object thread)
-        {
-
-        }
-
-        public override void Initialize(object thread)
-        {
-        }
-
-        public override void Main(object thread)
-        {
-
-        }
-    }
-
-    class MyClass5 : Thread_Auto_Base
-    {
-        public override event Action<DateTime, string> Run_Log;
-
-        public override void Error(object thread)
-        {
-        }
-
-        public override void Initialize(object thread)
-        {
-        }
-
-        public override void Main(object thread)
-        {
-        }
-    }
-
-
-    class MyClass6 : Thread_Auto_Base
-    {
-
-        public override event Action<DateTime, string> Run_Log;
-
-        public override void Error(object thread)
-        {
-        }
-
-        public override void Initialize(object thread)
-        {
-        }
-
-        public override void Main(object thread)
-        {
-        }
-    }
-    class MyClass7 : Thread_Auto_Base
-    {
-
-        public override event Action<DateTime, string> Run_Log;
-
-        public override void Error(object thread)
-        {
-        }
-
-        public override void Initialize(object thread)
-        {
-        }
-
-        public override void Main(object thread)
-        {
-
-        }
-    }
-
-    class MyClass8 : Thread_Auto_Base
-    {
-
-        public override event Action<DateTime, string> Run_Log;
-
-        public override void Error(object thread)
-        {
-        }
-
-        public override void Initialize(object thread)
-        {
-        }
-
-        public override void Main(object thread)
-        {
-
-        }
-    }
-    class MyClass9 : Thread_Auto_Base
-    {
-
-        public override event Action<DateTime, string> Run_Log;
-
-        public override void Error(object thread)
-        {
-        }
-
-        public override void Initialize(object thread)
-        {
-        }
-
-        public override void Main(object thread)
-        {
-
-        }
-    }
-
-    class MyClass10 : Thread_Auto_Base
-    {
-
-        public override event Action<DateTime, string> Run_Log;
-
-        public override void Error(object thread)
-        {
-        }
-
-        public override void Initialize(object thread)
-        {
-        }
-
-        public override void Main(object thread)
-        {
-
-        }
-    }
-
-    class MyClass11: Thread_Auto_Base
-    {
-
-        public override event Action<DateTime, string> Run_Log;
-
-        public override void Error(object thread)
-        {
-        }
-
-        public override void Initialize(object thread)
-        {
-        }
-
-        public override void Main(object thread)
-        {
-
-        }
-    }
-
-    class MyClass12 : Thread_Auto_Base
-    {
-
-        public override event Action<DateTime, string> Run_Log;
-
-        public override void Error(object thread)
-        {
-        }
-
-        public override void Initialize(object thread)
-        {
-        }
-
-        public override void Main(object thread)
-        {
-
-        }
-    }
-
-    class MyClass13 : Thread_Auto_Base
-    {
-
-        public override event Action<DateTime, string> Run_Log;
-
-        public override void Error(object thread)
-        {
-        }
-
-        public override void Initialize(object thread)
-        {
-        }
-
-        public override void Main(object thread)
+        public override void ThreadRestartEvent(ThreadAbortException ex, string class_na)
         {
 
         }

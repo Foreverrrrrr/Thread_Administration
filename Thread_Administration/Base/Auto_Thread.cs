@@ -8,15 +8,15 @@ namespace Thread_Administration.Base
 {
     public abstract class Thread_Auto_Base
     {
-        public abstract event Action<DateTime, string> Run_Log;
+        public abstract event Action<DateTime, string> Run_LogEvent;
 
         public static event Action<DateTime> NewClass_Run;
 
-        public static System.Collections.Generic.Queue<ProductionThreadBase> Auto_Th { get; set; }
+        public static System.Collections.Generic.List<ProductionThreadBase> Auto_Th { get; private set; } = new System.Collections.Generic.List<ProductionThreadBase>();
 
         public Thread_Auto_Base()
         {
-            Auto_Th = new System.Collections.Generic.Queue<ProductionThreadBase>();
+
         }
 
         public static void NewClass(int spintime = 50)
@@ -46,21 +46,41 @@ namespace Thread_Administration.Base
             {
                 Target = method.Name,
                 Thread_Name = descriptionAttribute?.Description ?? method.Name,
-                New_Thread = new Thread(() => { while (true) { Thread.Sleep(spintime); method.Invoke(instance, new object[] { instance }); } }),
+                New_Thread = new Thread(() => { while (true) { try { Thread.Sleep(spintime); method.Invoke(instance, new object[] { instance }); } catch (ThreadAbortException ex) { instance.ThreadRestartEvent(ex, class_na); Thread_Configuration(class_na, method, class_new, spintime); break; } } }),
             };
             threadBase.New_Thread.Name = class_na + "." + threadBase.Thread_Name;
             threadBase.New_Thread.IsBackground = true;
             threadBase.New_Thread.Start();
-            Auto_Th?.Enqueue(threadBase);
+            Auto_Th.Add(threadBase);
         }
 
-        [ProductionThreadBase]
+        public static void Thraead_Dispose()
+        {
+            if (Auto_Th != null)
+                if (Auto_Th.Count > 0)
+                {
+                    foreach (var item in Thread_Auto_Base.Auto_Th)
+                        item.New_Thread.Abort();
+                }
+        }
+
+        public static void Thraead_Dispose(string Thread_Name)
+        {
+            if (Auto_Th != null)
+                if (Auto_Th.Count > 0)
+                {
+                    var t = Thread_Auto_Base.Auto_Th.FirstOrDefault(x => x.Thread_Name == "diyds");
+                    t.New_Thread.Abort();
+                }
+        }
+
         public abstract void Initialize(object thread);
 
         [ProductionThreadBase]
         public abstract void Main(object thread);
 
-        [ProductionThreadBase]
         public abstract void Error(object thread);
+
+        public abstract void ThreadRestartEvent(ThreadAbortException ex, string class_na);
     }
 }
